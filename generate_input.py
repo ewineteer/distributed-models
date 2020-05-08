@@ -4,11 +4,7 @@ import pandas as pd
 import os
 import tqdm
 
-os.chdir('/home')
-
-os.getcwd()
-
-df = pd.read_csv('/home/eric/projects/InputData-WaterSupply_05-07-20.csv',header=None)
+df = pd.read_csv('~/projects/CityofLA_Opti/InputData-WaterSupply_05-07-20.csv',header=None)
 df = df[df.index != 1]
 df = df[df.index != 2]
 df = df.reset_index()
@@ -20,7 +16,7 @@ reprows = reprows.astype('str')
 
 
 def gen_inp(template,reprows,repvals,filename):
-    with open(filename, 'wt' ,encoding='utf_8') as fileout:
+    with open(filename, 'wt' ,encoding='utf_8', newline = '\r\n') as fileout:
         for j,line in enumerate(template):
             row = str(j+1)
             if row in reprows.values:
@@ -32,14 +28,14 @@ def gen_inp(template,reprows,repvals,filename):
 
 
 
-batchfile = open('/home/eric/projects/wsmodrun.bat','w+' ,encoding='utf_8')
+batchfile = open('/home/eric/projects/CityofLA_Opti/wsmodrun.bat','w+' ,encoding='utf_8')
 
 for i in tqdm.trange(1,len(df.index)):
-    template = open('/home/eric/projects/Template.inp','r',encoding='utf_8')
+    template = open('/home/eric/projects/CityofLA_Opti/Template_05-07-20.inp','r',encoding='utf_8')
     repvals = df.loc[i,].astype(str)
     origname = df.loc[i,5]
-    filepath = '/home/eric/projects/Input/WS/'
-    batchpath = 'C:/Projects/Input/WS/'
+    filepath = '/home/eric/projects/CityofLA_Opti/Input/WS/'
+    batchpath = 'C:/Projects/CityofLA_Opti/Input/WS/'
     filename = filepath + origname
     batchname = batchpath + origname
     gen_inp(template=template,reprows=reprows,repvals=repvals,filename=filename)
