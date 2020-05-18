@@ -1,5 +1,3 @@
-
-# %%
 import pandas as pd
 import os
 import tqdm
@@ -14,7 +12,7 @@ reprows = reprows.astype('int')
 reprows = reprows.astype('str')
 
 
-
+#This input generator is very brittle, and will hopefully be replaced soon with a much more flexible function.
 def gen_inp(template,reprows,repvals,filename):
     with open(filename, 'wt' ,encoding='utf_8', newline = '\r\n') as fileout:
         for j,line in enumerate(template):
@@ -26,22 +24,14 @@ def gen_inp(template,reprows,repvals,filename):
                     line = line.replace('@',val,1)
             fileout.write(line)
 
+def generate_log_file(path):
 
 
-batchfile = open('/home/eric/projects/CityofLA_Opti/rc_wqmodrun.bat','w+' ,encoding='utf_8')
 
 for i in tqdm.trange(1,len(df.index)):
     template = open('/home/eric/projects/CityofLA_Opti/RC_Template_05-14-20.inp','r',encoding='utf_8')
     repvals = df.loc[i,].astype(str)
     origname = df.loc[i,5]
     filepath = '/home/eric/projects/CityofLA_Opti/Input/RC_WQ/'
-    batchpath = 'C:/Projects/CityofLA_Opti/Input/WQ/'
     filename = filepath + origname
-    batchname = batchpath + origname
     gen_inp(template=template,reprows=reprows,repvals=repvals,filename=filename)
-    batchfile.write("Sustain64.exe 2 " + batchname +'\n')
-
-
-batchfile.write("pause\n")
-batchfile.write("exit")
-batchfile.close()

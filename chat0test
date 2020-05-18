@@ -1,0 +1,59 @@
+import socket
+import select
+
+headersize = 10
+ip = '127.0.0.1'
+port = 1234
+
+serversock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # makes the port we're using reusable
+
+serversock.bind((ip, port)) #This function expects a tuple with the ip and port. Thus, the space between the two is neccesary.
+serversock.listen()
+
+
+socklist = [serversock] #right now, there's only the server. as clients connect, we'll add those
+clients = {} #this will contain metadata for each client, with their ip as the key
+
+def receivemess(clientsock):
+    try:
+        messheader = clientsock.recv(headersize)
+
+        if not len(messheader):
+            return False
+
+        messlen = int(messheader.decode('utf-8'))
+        messdata = clientsock.recv(messlen)
+        return({'header':messheader,'data':messdata})
+
+    except:
+        return False
+
+while True:
+    readsocks, _, exceptsocks = select.select(socklist, [], socklist)
+
+    for notifiedsock in readsocks:
+        if notifiedsock == serversock:
+            clientsock, clientaddr = serversock.accept
+            user = receivemess(clientsock)
+            if user is False:
+                continue
+            socklist.append(clientsock)
+            clients[clientsock] == user
+
+            print(f'Accepted new connection from {clientaddr[0]}:{clientaddr[1]} username:{user['data'].decode('utf-8')}')
+        else:
+            mess = receivemess(notifiedsock)
+
+            if mess is False:
+                print(f'Closed connection from {clients[notifiedsock]['data'].decode('utf-8')}')
+                socklist.remove(notifiedsock)
+                del clients[notifiedsock]
+                continue
+
+            user = clients[notifiedsock]
+            print(f'Received message from {user['data'].decode('utf-8')}: {mess['data'].decode('utf-8')}')
+
+            for clientsock in clients:
+                if clientsock != notifiedsock:
+                    clientsock.send(user['header'] + user['data'] + message['header'] + message['data'])
