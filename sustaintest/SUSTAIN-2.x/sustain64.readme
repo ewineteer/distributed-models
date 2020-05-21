@@ -1,0 +1,25 @@
+SUSTAIN command line executable. The structure and flags are as follows:
+
+
+> sustain64.exe [FLAG] [INPUT FILE] [OPTIONAL: SOLUTION NUMBER]
+
+Flag
+0 – Single run, standard mode, and the message boxes are enabled.
+1 – Batch Mode w/ Timeseries output, and the message boxes are disabled 
+2 – Batch Mode w/o Timeseries output, and the message boxes are disabled 
+3 – Run using selected solution from the BestSolutions.out file, w/ Timeseries output 
+    (NOTE: If more than one solution, should be space delimited list with quoation marks)
+4 – Run using selected solution from the BestSolutions.out file, w/o Timeseries output 
+5 – Batch Mode w/ Timeseries output, LSPC linkage file format 
+
+Examples - Run the input file as is, not in batch mode
+> sustain64.exe 0 C:\SUSTAIN\Projects\MyProject\MyInputFile.inp
+
+Examples - Run the input file with selected solution #5 & #12 from BestSolutions.out
+> sustain64.exe 3 C:\SUSTAIN\Projects\MyProject\MyInputFile.inp "5 12"
+
+If any unknown flag is specified, too few parameters are given, or the user gives a ‘-h’ flag for help;
+the tool will print example usage and options to the console.
+
+Note: sustain64.exe, sustain64.dll, and batch file (*.bat) should be located at the same location otherwise enter the full file path for sustain64.exe in the batch file as shown below.
+> C:\SUSTAIN\ETC\sustain64.exe 0 C:\SUSTAIN\Projects\MyProject\MyInputFile.inp

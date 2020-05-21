@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import tqdm
 
-df = pd.read_csv('~/projects/CityofLA_Opti/RC_InputData-WaterQuality_05-14-20.csv',header=None)
+df = pd.read_csv('~/projects/CityofLA_Opti/OW-4_InputData-WaterQuality_05-19-20_v2.csv',header=None)
 df = df[df.index != 1]
 df = df[df.index != 2]
 df = df.reset_index()
@@ -28,13 +28,13 @@ def gen_inp(template,reprows,repvals,filename):
 
 
 
-batchfile = open('/home/eric/projects/CityofLA_Opti/rc_wqmodrun.bat','w+' ,encoding='utf_8')
+batchfile = open('/home/eric/projects/CityofLA_Opti/ow4_wqmodrun_V2.bat','w+' ,encoding='utf_8')
 
 for i in tqdm.trange(1,len(df.index)):
-    template = open('/home/eric/projects/CityofLA_Opti/RC_Template_05-14-20.inp','r',encoding='utf_8')
+    template = open('/home/eric/projects/CityofLA_Opti/OW-4_Template_05-19-20.inp','r',encoding='utf_8')
     repvals = df.loc[i,].astype(str)
     origname = df.loc[i,5]
-    filepath = '/home/eric/projects/CityofLA_Opti/Input/RC_WQ/'
+    filepath = '/home/eric/projects/CityofLA_Opti/Input/OW_WQ_V2/'
     batchpath = 'C:/Projects/CityofLA_Opti/Input/WQ/'
     filename = filepath + origname
     batchname = batchpath + origname
