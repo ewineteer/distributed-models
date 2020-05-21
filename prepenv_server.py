@@ -6,9 +6,9 @@ sys.path.append('/home/eric/projects/distributed-models')
 import serverfuncs
 
 
-sclient = paramiko.SSHClient()
-sclient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-sclient.connect(hostname='192.168.0.202', username='paradigm', password='rocketship')
+sclient = serverfuncs.connectclient(hostname='192.168.0.202',
+                                    username='paradigm', password='rocketship')
+
 
 # Even if there is only one file to send, the paths MUST be in a list for this function to work.
 remotefuncs.sendfiles(sclient, ['/home/eric/projects/distributed-models/prepenv_client.py'], ['C:/SUSTAIN/prepenv_client.py.py'])

@@ -11,5 +11,3 @@ args = parser.parse_args()
 print(args.indir)
 
 inps = glob.glob(os.path.join(args.indir,'*'))
-
-print(inps[0])

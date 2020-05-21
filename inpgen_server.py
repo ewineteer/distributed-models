@@ -19,13 +19,9 @@ temppath = args.temppath
 parmspath = args.parmspath
 batchname = args.batchname
 
-'''
-temppath = '/home/eric/projects/CityofLA_Opti/Template_05-20-20.inp'
-parmspath = '/home/eric/projects/distributed-models/Wilmington_05-20-20_transposed (1).csv'
-batchname = 'testbatch'
-'''
-
-
+temppath = '/home/eric/projects/CityofLA_Opti/Template_05-20-20.csv'
+parmspath = '/home/eric/projects/distributed-models/Wilmington_05-20-20_transposed.csv'
+batchname = 'cola-wilmington2'
 inpdir = '/home/eric/projects/distributed-models/Input/'
 
 batchdir = os.path.join(inpdir, batchname)
@@ -36,14 +32,19 @@ parms = serverfuncs.read_modparms(parmspath)
 runnames = parms.index[1:]
 runname = runnames[0]
 
+runname = runnames[0]
 for runname in runnames:
     keys = parms.columns.astype(str)
     values = parms.loc[runname, :]
     lookup = dict(zip(keys, values))
-    lookup['OUTPATH'] = 'C:/SUSTAIN/Output/TempOut'
+    lookup['OUTPATH'] = 'C:/SUSTAIN/Output/' + batchname
     repfunc = serverfuncs.RepFuncs()
     repfunc.lookup = lookup
     inppath = os.path.join(inpdir, batchname, f'{runname}.inp')
     serverfuncs.gen_inp(templatepath=temppath, inppath=inppath, modrep=repfunc.modrep)
 
 print('Input files successfully generated.')
+
+
+
+lookup
