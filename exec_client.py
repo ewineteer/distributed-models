@@ -1,8 +1,15 @@
 import os
+import subprocess
+import glob
 
-def runmodel(input, sustainver):
+def runmodel(inputfile, sustainver):
     sustainexe = os.path.join('C:/SUSTAIN/', sustainver, 'sustain64.exe')
-    print(sustainexe)
+    sustaincommand = sustainexe + ' 2 ' + inputfile
 
+def runallmodels(inputdir,sustainver):
+    inpfiles = glob.glob(os.path.join(inputdir,'*.inp'))
+    sustainexe = os.path.join('C:/SUSTAIN/', sustainver, 'sustain64.exe')
+    for inpfile in inpfiles:
+        subprocess.run([sustainexe, '2', inpfile])
 
-runmodel(input='nan', sustainver='SUSTAIN-2.0')
+runallmodels('C:/SUSTAIN/Input/cola-wilmington4', 'SUSTAIN-2.0')
